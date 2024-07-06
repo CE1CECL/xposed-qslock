@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.char101.qslock">
+    package="chriseric1.cecl.ce1cecl.qslock">
 
     <application
         android:allowBackup="true"

@@ -2,12 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
-        applicationId "com.github.char101.qslock"
-        minSdkVersion 19
+        applicationId "chriseric1.cecl.ce1cecl.qslock"
+        minSdkVersion 1
         targetSdkVersion 28
-        versionCode 3
-        versionName "2.0.0"
+        versionCode 1
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
