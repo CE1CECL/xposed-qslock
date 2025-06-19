@@ -8,6 +8,7 @@ import de.robv.android.xposed.XposedHelpers;
 import android.app.AndroidAppHelper;
 import android.content.Context;
 import android.util.Log;
+import java.lang.reflect.Method;
 
 public class Main implements IXposedHookLoadPackage {
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
@@ -20,48 +21,46 @@ public class Main implements IXposedHookLoadPackage {
         XposedBridge.log("qslock: " + "started");
         Log.i("qslock", "started");
 
-        XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardDisplayManager", lpparam.classLoader, "show", new XC_MethodHook() {
+        Method updateDisplaysMethod = this.findMethodByName(XposedHelpers.findClass("com.android.keyguard.KeyguardDisplayManager", lpparam.classLoader), "updateDisplays");
+        XposedBridge.hookMethod(updateDisplaysMethod, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                XposedBridge.log("qslock: " + "show");
-                Log.i("qslock", "show");
+                XposedBridge.log("qslock: " + "updateDisplays");
+                Log.i("qslock", "updateDisplays");
                 Context context = (Context) AndroidAppHelper.currentApplication();
                 if (context == null) {
-                    XposedBridge.log("qslock: " + "show context == null");
+                    XposedBridge.log("qslock: " + "updateDisplays context == null");
                     Log.e("qslock", "context == null");
                     return;
                 }
                 Object statusBarManager = context.getSystemService("statusbar");
                 if (statusBarManager == null) {
-                    XposedBridge.log("qslock: " + "show statusBarManager == null");
+                    XposedBridge.log("qslock: " + "updateDisplays statusBarManager == null");
                     Log.e("qslock", "statusBarManager == null");
                     return;
                 }
-                XposedHelpers.callMethod(statusBarManager, "disable", -1);
-                XposedHelpers.callMethod(statusBarManager, "disable2", -1);
+                boolean isLockScreenActive = param.args[0].toString() == "true";
+                if (isLockScreenActive) {
+                    XposedBridge.log("qslock: " + "isLockScreenActive true");
+                    Log.i("qslock", "isLockScreenActive true");
+                    XposedHelpers.callMethod(statusBarManager, "disable", -1);
+                    XposedHelpers.callMethod(statusBarManager, "disable2", -1);
+                } else {
+                    XposedBridge.log("qslock: " + "isLockScreenActive false");
+                    Log.i("qslock", "isLockScreenActive false");
+                    XposedHelpers.callMethod(statusBarManager, "disable", 0);
+                    XposedHelpers.callMethod(statusBarManager, "disable2", 0);
+                }
             }
         });
 
-        XposedHelpers.findAndHookMethod("com.android.keyguard.KeyguardDisplayManager", lpparam.classLoader, "hide", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                XposedBridge.log("qslock: " + "hide");
-                Log.i("qslock", "hide");
-                Context context = (Context) AndroidAppHelper.currentApplication();
-                if (context == null) {
-                    XposedBridge.log("qslock: " + "hide context == null");
-                    Log.e("qslock", "context == null");
-                    return;
-                }
-                Object statusBarManager = context.getSystemService("statusbar");
-                if (statusBarManager == null) {
-                    XposedBridge.log("qslock: " + "hide statusBarManager == null");
-                    Log.e("qslock", "statusBarManager == null");
-                    return;
-                }
-                XposedHelpers.callMethod(statusBarManager, "disable", 0);
-                XposedHelpers.callMethod(statusBarManager, "disable2", 0);
+    private Method findMethodByName(Class cl, String name) {
+        Method[] methods = cl.getDeclaredMethods();
+        for (int i = 0; i < methods.length; i++) {
+            if (methods[i].getName() == name) {
+                return methods[i];
             }
-        });
+        }
+        return null;
     }
 }
