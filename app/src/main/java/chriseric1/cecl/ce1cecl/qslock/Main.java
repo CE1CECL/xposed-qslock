@@ -53,7 +53,7 @@ public class Main implements IXposedHookLoadPackage {
                 }
             }
         });
-
+	}
     private Method findMethodByName(Class cl, String name) {
         Method[] methods = cl.getDeclaredMethods();
         for (int i = 0; i < methods.length; i++) {
