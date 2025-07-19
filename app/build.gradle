@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "chriseric1.cecl.ce1cecl.qslock"
         minSdkVersion 1
-        targetSdkVersion 28
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,6 +29,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    compileOnly files('libs/api-82.jar')
-    compileOnly files('libs/api-82-sources.jar')
+    compileOnly files('libs/api-53.jar')
+    compileOnly files('libs/api-53-sources.jar')
 }
