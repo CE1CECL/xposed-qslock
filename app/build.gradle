@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     lintOptions {
         abortOnError false
     }
     defaultConfig {
         applicationId "chriseric1.cecl.ce1cecl.qslock"
         minSdkVersion 1
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
