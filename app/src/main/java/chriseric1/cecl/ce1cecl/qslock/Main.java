@@ -43,12 +43,10 @@ public class Main implements IXposedHookLoadPackage {
                 if (isLockScreenActive) {
                     XposedBridge.log("qslock: " + "isLockScreenActive true");
                     Log.i("qslock", "isLockScreenActive true");
-                    XposedHelpers.callMethod(statusBarManager, "disable", -1);
                     XposedHelpers.callMethod(statusBarManager, "disable2", -1);
                 } else {
                     XposedBridge.log("qslock: " + "isLockScreenActive false");
                     Log.i("qslock", "isLockScreenActive false");
-                    XposedHelpers.callMethod(statusBarManager, "disable", 0);
                     XposedHelpers.callMethod(statusBarManager, "disable2", 0);
                 }
             }
